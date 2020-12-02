@@ -12,7 +12,6 @@ public class HelloController {
     @GetMapping("/")
     @ResponseBody
     public String index(HttpServletRequest request){
-
         return "hello, world";
     }
 
