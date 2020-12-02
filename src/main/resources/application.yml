@@ -1,0 +1,46 @@
+#页面配置
+spring:
+  application:
+    name: software
+#  thymeleaf:
+#    mode: HTML
+#    prefix: classpath:/templates/
+#    suffix: .html
+#    encoding: UTF-8
+#    cache: false
+  datasource:
+    url: jdbc:mysql://rm-bp1a16zhf40aqg6f4po.mysql.rds.aliyuncs.com:3306/zrsx?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true
+    username: tcdf
+    password: Tiancidaifei!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mvc:
+    static-path-pattern: /**
+#  resources:
+#    static-locations: classpath:/static/,classpath:/templates/
+#  mail:
+#    username: enjoy_listening@163.com
+#    password: YIYJTYNXBSQTCLBZ
+#    host: smtp.163.com
+
+# 服务器端口配置
+server:
+  port: 8080
+
+# mybatis配置
+mybatis:
+  type-aliases-package: com.graduation.practice.entity
+  mapper-locations: classpath:mapper/*.xml
+
+# 配置打印sql
+logging:
+  level:
+    com.graduation.practice.dao: DEBUG
+
+#pagehelper 分页插件
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: countSql
+  pageSizeZero: false #pageSize=0
+
