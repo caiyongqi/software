@@ -28,7 +28,7 @@ server:
 
 # mybatis配置
 mybatis:
-  type-aliases-package: com.graduation.practice.entity
+  type-aliases-package: center.cyq.software.entity
   mapper-locations: classpath:mapper/*.xml
 
 # 配置打印sql
