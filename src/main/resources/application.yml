@@ -17,10 +17,10 @@ spring:
     static-path-pattern: /**
 #  resources:
 #    static-locations: classpath:/static/,classpath:/templates/
-#  mail:
-#    username: enjoy_listening@163.com
-#    password: YIYJTYNXBSQTCLBZ
-#    host: smtp.163.com
+  mail:
+    username: enjoy_listening@163.com
+    password: YIYJTYNXBSQTCLBZ
+    host: smtp.163.com
 
 # 服务器端口配置
 server:
