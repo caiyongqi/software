@@ -22,4 +22,5 @@ public class CorsConfig {
         source.registerCorsConfiguration("/**", buildConfig()); // 对接口配置跨域设置
         return new CorsFilter(source);
     }
+
 }
