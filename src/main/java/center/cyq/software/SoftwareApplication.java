@@ -3,8 +3,9 @@ package center.cyq.software;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
-public class SoftwareApplication {
+public class SoftwareApplication{
 
     public static void main(String[] args) {
         SpringApplication.run(SoftwareApplication.class, args);
