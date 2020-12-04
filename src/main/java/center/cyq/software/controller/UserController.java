@@ -105,13 +105,14 @@ public class UserController {
         JSONObject result = new JSONObject();
         if (user == null) {
             result.put("type", 1);
+            result.put("code", 400);
         } else if (!user.getPassword().equals(password)) {
             result.put("type", 0);
-            result.put("message", "密码错误");
+            result.put("code", 400);
         }else{
             result.put("type", 0);
+            result.put("code", 200);
         }
-        result.put("code", 200);
         return result;
     }
 
