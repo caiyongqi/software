@@ -68,10 +68,14 @@ public class UserController {
         String code = getRandomCode();
         mailMessage.setText("你的验证码为：" + code);
         request.getSession().setAttribute("code", code);
-        mailSender.send(mailMessage);
-
         JSONObject result = new JSONObject();
-        result.put("code", 200);
+        try {
+            mailSender.send(mailMessage);
+            result.put("code", 200);
+        }catch (Exception e){
+            result.put("code", 400);
+        }
+
         return result;
     }
 
