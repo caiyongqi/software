@@ -76,12 +76,15 @@ public class UserController {
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(from);
+        // 设置抄送人，不加可能会被当成垃圾邮件
+        mailMessage.setCc(from);
         mailMessage.setTo(mail);
         mailMessage.setSubject("游戏管理系统：验证码");
         String code = getRandomCode();
         mailMessage.setText("你的验证码为：" + code);
         request.getSession().setAttribute("code", code);
         JSONObject result = new JSONObject();
+
         try {
             mailSender.send(mailMessage);
             result.put("code", 200);
