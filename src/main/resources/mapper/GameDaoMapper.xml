@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="center.cyq.software.dao.GameDao">
+
+    <select id="getDiscountedGames" parameterType="Integer" resultType="Game">
+        SELECT * FROM game ORDER BY discount ASC LIMIT #{nums}
+    </select>
+
+    <select id="getRecommendGames" parameterType="Integer" resultType="Game">
+        SELECT * FROM game LIMIT #{nums}
+    </select>
+
+    <select id="getLatestGames" parameterType="Integer" resultType="Game">
+        SELECT * FROM game ORDER BY publishTime DESC LIMIT #{nums}
+    </select>
+
+    <select id="getGameInfo" parameterType="Integer" resultType="Game">
+        SELECT * FROM game WHERE id = #{id}
+    </select>
+
+</mapper>

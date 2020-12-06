@@ -8,4 +8,6 @@ public interface UserService {
     User findUserByMail(User user);
 
     Integer updateUser(User user);
+
+    User findUserById(Integer userId);
 }

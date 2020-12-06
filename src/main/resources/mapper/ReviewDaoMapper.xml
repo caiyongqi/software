@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="center.cyq.software.dao.ReviewDao">
+
+    <select id="getReviews" parameterType="Integer" resultType="Review">
+        SELECT * FROM review WHERE gameId = #{gameId}
+    </select>
+
+    <select id="getReviewNum" parameterType="Integer" resultType="Integer">
+        SELECT COUNT(*) FROM review WHERE gameId = #{gameId}
+    </select>
+
+</mapper>

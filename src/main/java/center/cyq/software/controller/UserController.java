@@ -1,9 +1,12 @@
 package center.cyq.software.controller;
 
+import center.cyq.software.entity.Game;
 import center.cyq.software.entity.User;
+import center.cyq.software.service.MyGameService;
 import center.cyq.software.service.UserService;
 import center.cyq.software.utils.MD5Utils;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,6 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 @Controller
@@ -20,12 +28,17 @@ public class UserController {
     @Value("${spring.mail.username}")
     private String from;
     private JavaMailSender mailSender;
+    private DateFormat dateFormat;
 
     private UserService userService;
+    private MyGameService myGameService;
 
-    public UserController(JavaMailSender mailSender, UserService userService) {
+    @Autowired
+    public UserController(JavaMailSender mailSender, UserService userService, MyGameService myGameService) {
         this.mailSender = mailSender;
         this.userService = userService;
+        this.myGameService = myGameService;
+        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 
     @GetMapping("/register")
@@ -138,6 +151,43 @@ public class UserController {
         }else{
             result.put("code", 400);
         }
+        return result;
+    }
+
+    // 返回用户购物车内容
+    @GetMapping("/myCart")
+    @ResponseBody
+    public JSONObject getCartInfo(HttpServletRequest request) {
+        JSONObject result = new JSONObject();
+
+        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        // 获取参数
+        Integer userId = Integer.valueOf(request.getParameter("userId"));
+
+        List<Game> gameList = myGameService.getCartInfo(userId);
+        if (gameList == null){
+            result.put("code", 400);
+            return result;
+        }
+
+        List<JSONObject> games = new ArrayList<>();
+        float totalPrice = 0;
+        for (Game g:gameList) {
+            // 字段如果为null，则不会存入json，返回的数据中没有该字段
+            JSONObject game = new JSONObject()
+                    .element("gameId", g.getId())
+                    .element("gameName", g.getName())
+                    .element("price", g.getPrice())
+                    .element("discount", g.getDiscount())
+                    .element("picUrl", g.getPicUrl())
+                    .element("publishTime", dateFormat.format(g.getPublishTime()));
+            totalPrice += g.getPrice();
+            games.add(game);
+        }
+
+        result.put("totalAmount", totalPrice);
+        result.put("games", games);
+        result.put("code", 200);
         return result;
     }
 

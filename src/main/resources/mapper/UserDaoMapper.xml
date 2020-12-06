@@ -17,4 +17,7 @@
         </if>
         WHERE mail = #{mail}
     </update>
+    <select id="findUserById" parameterType="Integer" resultType="User">
+        SELECT * FROM user WHERE userId = #{userId}
+    </select>
 </mapper>
