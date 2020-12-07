@@ -18,4 +18,10 @@ public interface MyGameDao {
 
     // 删除购物车所有商品
     Integer deleteAllGameInCart(Integer userId);
+
+    // 添加游戏到购物车
+    Integer addList(@Param("userId") Integer userId, @Param("gameId") Integer gameId);
+
+    // 返回查询的游戏信息
+    List<Game> searchGame(@Param("content") String content);
 }

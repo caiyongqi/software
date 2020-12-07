@@ -11,4 +11,13 @@
     <delete id="deleteAllGameInCart" parameterType="Integer">
         DELETE FROM mygame WHERE userId = #{userId}
     </delete>
+
+    <insert id="addList" parameterType="Integer">
+         INSERT INTO mygame(userId,gameId) SELECT #{userId},#{gameId} from DUAL WHERE not EXISTS (SELECT userId, gameId FROM mygame WHERE userId=#{userId} and gameId=#{gameId})
+    </insert>
+
+    <select id="searchGame" parameterType="String" resultType="Game">
+        select * from game where name LIKE concat("%", #{content}, "%")
+    </select>
+
 </mapper>

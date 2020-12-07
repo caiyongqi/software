@@ -42,7 +42,7 @@ public class UserController {
 
     @GetMapping("/register")
     @ResponseBody
-    public JSONObject addUser(HttpServletRequest request){
+    public JSONObject addUser(HttpServletRequest request) {
         String userName = request.getParameter("userName");
         Integer gender = Integer.valueOf(request.getParameter("gender"));
         String password = MD5Utils.code(request.getParameter("registerPassword"));
@@ -70,7 +70,7 @@ public class UserController {
 
     @GetMapping("/register/sendCode")
     @ResponseBody
-    public JSONObject sendCode(HttpServletRequest request){
+    public JSONObject sendCode(HttpServletRequest request) {
         String mail = request.getParameter("registerMail");
         System.out.println(mail);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
@@ -86,7 +86,7 @@ public class UserController {
         try {
             mailSender.send(mailMessage);
             result.put("code", 200);
-        }catch (Exception e){
+        } catch (Exception e) {
             result.put("code", 400);
         }
         return result;
@@ -94,16 +94,16 @@ public class UserController {
 
     @GetMapping("/register/checkCode")
     @ResponseBody
-    public JSONObject checkCode(HttpServletRequest request, HttpSession session){
+    public JSONObject checkCode(HttpServletRequest request, HttpSession session) {
         String code = (String) session.getAttribute("code");
 
         String mail = request.getParameter("registerMail");
         String verifyCode = request.getParameter("registerVerifyCode");
 
         JSONObject result = new JSONObject();
-        if (code.equals(verifyCode)){
+        if (code.equals(verifyCode)) {
             result.put("code", 200);
-        }else{
+        } else {
             result.put("code", 400);
         }
 
@@ -126,15 +126,15 @@ public class UserController {
         } else if (!user.getPassword().equals(password)) {
             result.put("type", 0);
             result.put("code", 400);
-        }else{
+        } else {
             result.put("type", 0);
             result.put("code", 200);
             List<JSONObject> obj = new ArrayList<>();
             obj.add(new JSONObject()
-                        .element("userId", user.getUserId())
-                        .element("userName", user.getUserName())
-                        .element("gender", user.getGender())
-                        .element("mail", user.getMail()));
+                    .element("userId", user.getUserId())
+                    .element("userName", user.getUserName())
+                    .element("gender", user.getGender())
+                    .element("mail", user.getMail()));
             result.element("loginObj", obj);
         }
         return result;
@@ -142,7 +142,7 @@ public class UserController {
 
     @GetMapping("/resetPassword")
     @ResponseBody
-    public JSONObject resetPassword(HttpServletRequest request){
+    public JSONObject resetPassword(HttpServletRequest request) {
         String mail = request.getParameter("resetMail");
         String password = MD5Utils.code(request.getParameter("resetPassword"));
 //        User user = userService.findUserByMail(new User(mail));
@@ -153,9 +153,9 @@ public class UserController {
 //            return result;
 //        }
 
-        if(userService.updateUser(new User(mail, password)) == 1){
+        if (userService.updateUser(new User(mail, password)) == 1) {
             result.put("code", 200);
-        }else{
+        } else {
             result.put("code", 400);
         }
         return result;
@@ -172,14 +172,14 @@ public class UserController {
         Integer userId = Integer.valueOf(request.getParameter("userId"));
 
         List<Game> gameList = myGameService.getCartInfo(userId);
-        if (gameList == null){
+        if (gameList == null) {
             result.put("code", 400);
             return result;
         }
 
         List<JSONObject> games = new ArrayList<>();
         float totalPrice = 0;
-        for (Game g:gameList) {
+        for (Game g : gameList) {
             // 字段如果为null，则不会存入json，返回的数据中没有该字段
             JSONObject game = new JSONObject()
                     .element("gameId", g.getId())
@@ -207,7 +207,7 @@ public class UserController {
         Integer userId = Integer.valueOf(request.getParameter("userId"));
         Integer gameId = Integer.valueOf(request.getParameter("gameId"));
 
-        if (myGameService.deleteGameInCart(userId, gameId) != 1){
+        if (myGameService.deleteGameInCart(userId, gameId) != 1) {
             result.put("code", 400);
         } else {
             result.put("code", 200);
@@ -223,12 +223,69 @@ public class UserController {
         // 获取参数
         Integer userId = Integer.valueOf(request.getParameter("userId"));
 
-        if (myGameService.deleteAllGameInCart(userId) > 0){
+        if (myGameService.deleteAllGameInCart(userId) > 0) {
             result.put("code", 200);
         } else {
             result.put("code", 400);
         }
         return result;
     }
+
+    @GetMapping("/addList")
+    @ResponseBody
+    public JSONObject addList(HttpServletRequest request) {
+        JSONObject result = new JSONObject();
+
+        // 获取参数
+        Integer userId = Integer.valueOf(request.getParameter("userId"));
+        Integer gameId = Integer.valueOf(request.getParameter("gameId"));
+
+        // 操作成功码的判断
+        Integer code = myGameService.addList(userId, gameId);
+        if (code >= 0) {
+            result.put("code", 200);
+        } else {
+            result.put("code", 400);
+        }
+        return result;
+    }
+
+
+    @GetMapping("/search")
+    @ResponseBody
+    public JSONObject searchGame(HttpServletRequest request) {
+        JSONObject result = new JSONObject();
+        // 获取参数
+        String content = request.getParameter("content");
+
+        // 操作成功码的判断
+        List<Game> gamesList = myGameService.searchGame(content);
+//        System.out.println(gamesList);
+        if (gamesList == null) {
+            result.put("code", 400);
+            result.put("searchList", null);
+            result.put("totalSearch", 0);
+            return result;
+        }
+        // 时间格式化
+        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        List<JSONObject> gamesInfo = new ArrayList<>();
+        for (Game g1 : gamesList) {
+            // 字段如果为null，则不会存入json，返回的数据中没有该字段
+            JSONObject game = new JSONObject()
+                    .element("gameId", g1.getId())
+                    .element("gameName", g1.getName())
+                    .element("price", g1.getPrice())
+                    .element("discount", g1.getDiscount())
+                    .element("picUrl", g1.getPicUrl())
+                    .element("publishTime", dateFormat.format(g1.getPublishTime()));
+            gamesInfo.add(game);
+        }
+        result.put("code", 200);
+        result.put("searchList", gamesInfo);
+        result.put("totalSearch", gamesList.size());
+        return result;
+    }
+
 
 }
