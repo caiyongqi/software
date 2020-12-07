@@ -19,7 +19,6 @@ import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -73,7 +72,7 @@ public class UserController {
     @ResponseBody
     public JSONObject sendCode(HttpServletRequest request){
         String mail = request.getParameter("registerMail");
-
+        System.out.println(mail);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(from);
         // 设置抄送人，不加可能会被当成垃圾邮件
@@ -132,6 +131,13 @@ public class UserController {
         }else{
             result.put("type", 0);
             result.put("code", 200);
+            List<JSONObject> obj = new ArrayList<>();
+            obj.add(new JSONObject()
+                        .element("userId", user.getUserId())
+                        .element("userName", user.getUserName())
+                        .element("gender", user.getGender())
+                        .element("mail", user.getMail()));
+            result.element("loginObj", obj);
         }
         return result;
     }
@@ -191,6 +197,39 @@ public class UserController {
         result.put("totalAmount", totalPrice);
         result.put("games", games);
         result.put("code", 200);
+        return result;
+    }
+
+    @GetMapping("/deleteGame")
+    @ResponseBody
+    public JSONObject deleteGameInCart(HttpServletRequest request) {
+        JSONObject result = new JSONObject();
+
+        // 获取参数
+        Integer userId = Integer.valueOf(request.getParameter("userId"));
+        Integer gameId = Integer.valueOf(request.getParameter("gameId"));
+
+        if (myGameService.deleteGameInCart(userId, gameId) != 1){
+            result.put("code", 400);
+        } else {
+            result.put("code", 200);
+        }
+        return result;
+    }
+
+    @GetMapping("/deleteAllGame")
+    @ResponseBody
+    public JSONObject deleteAllGameInCart(HttpServletRequest request) {
+        JSONObject result = new JSONObject();
+
+        // 获取参数
+        Integer userId = Integer.valueOf(request.getParameter("userId"));
+
+        if (myGameService.deleteAllGameInCart(userId) > 0){
+            result.put("code", 200);
+        } else {
+            result.put("code", 400);
+        }
         return result;
     }
 

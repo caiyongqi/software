@@ -21,4 +21,14 @@ public class MyGameServiceImpl implements MyGameService {
     public List<Game> getCartInfo(Integer userId) {
         return myGameDao.getCartInfo(userId);
     }
+
+    @Override
+    public Integer deleteGameInCart(Integer userId, Integer gameId) {
+        return myGameDao.deleteGameInCart(userId, gameId);
+    }
+
+    @Override
+    public Integer deleteAllGameInCart(Integer userId) {
+        return myGameDao.deleteAllGameInCart(userId);
+    }
 }

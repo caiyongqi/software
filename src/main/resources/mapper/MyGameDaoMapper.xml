@@ -5,5 +5,10 @@
     <select id="getCartInfo" parameterType="Integer" resultType="Game">
         SELECT game.* FROM mygame, game WHERE mygame.userId = #{userId} AND mygame.gameId = game.id
     </select>
-
+    <delete id="deleteGameInCart" parameterType="Integer">
+        DELETE FROM mygame WHERE gameId = #{gameId} AND userId = #{userId}
+    </delete>
+    <delete id="deleteAllGameInCart" parameterType="Integer">
+        DELETE FROM mygame WHERE userId = #{userId}
+    </delete>
 </mapper>
