@@ -72,7 +72,7 @@ public class UserController {
     @ResponseBody
     public JSONObject sendCode(HttpServletRequest request) {
         String mail = request.getParameter("registerMail");
-        System.out.println(mail);
+//        System.out.println(mail);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(from);
         // 设置抄送人，不加可能会被当成垃圾邮件
@@ -86,7 +86,8 @@ public class UserController {
         try {
             mailSender.send(mailMessage);
             result.put("code", 200);
-        } catch (Exception e) {
+        }catch (Exception e){
+//            System.out.println(e);
             result.put("code", 400);
         }
         return result;
@@ -106,7 +107,8 @@ public class UserController {
         } else {
             result.put("code", 400);
         }
-
+        // 先不进行验证，使用服务器访问会有问题
+//        result.put("code", 200);
         return result;
     }
 

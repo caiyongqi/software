@@ -21,9 +21,12 @@ spring:
     username: enjoy_listening@163.com
     password: YIYJTYNXBSQTCLBZ
     host: smtp.163.com
+    port: 465
     properties:
       mail:
         smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
           auth: true
           startls:
             enable: true
