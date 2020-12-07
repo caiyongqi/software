@@ -83,14 +83,12 @@ public class UserController {
         mailMessage.setText("你的验证码为：" + code);
         request.getSession().setAttribute("code", code);
         JSONObject result = new JSONObject();
-
         try {
             mailSender.send(mailMessage);
             result.put("code", 200);
         }catch (Exception e){
             result.put("code", 400);
         }
-
         return result;
     }
 

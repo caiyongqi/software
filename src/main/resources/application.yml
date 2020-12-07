@@ -21,14 +21,6 @@ spring:
     username: enjoy_listening@163.com
     password: YIYJTYNXBSQTCLBZ
     host: smtp.163.com
-    properties:
-      mail:
-        smtp:
-          auth: true
-          startls:
-            enable: true
-            required: true
-
 
 # 服务器端口配置
 server:
