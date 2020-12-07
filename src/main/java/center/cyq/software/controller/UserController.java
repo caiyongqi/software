@@ -72,7 +72,7 @@ public class UserController {
     @ResponseBody
     public JSONObject sendCode(HttpServletRequest request){
         String mail = request.getParameter("registerMail");
-        System.out.println(mail);
+//        System.out.println(mail);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(from);
         // 设置抄送人，不加可能会被当成垃圾邮件
@@ -81,13 +81,13 @@ public class UserController {
         mailMessage.setSubject("游戏管理系统：验证码");
         String code = getRandomCode();
         mailMessage.setText("你的验证码为：" + code);
-//        request.getSession().setAttribute("code", code);
+        request.getSession().setAttribute("code", code);
         JSONObject result = new JSONObject();
         try {
             mailSender.send(mailMessage);
             result.put("code", 200);
         }catch (Exception e){
-            System.out.println(e);
+//            System.out.println(e);
             result.put("code", 400);
         }
         return result;
@@ -96,19 +96,19 @@ public class UserController {
     @GetMapping("/register/checkCode")
     @ResponseBody
     public JSONObject checkCode(HttpServletRequest request, HttpSession session){
-//        String code = (String) session.getAttribute("code");
+        String code = (String) session.getAttribute("code");
 
         String mail = request.getParameter("registerMail");
         String verifyCode = request.getParameter("registerVerifyCode");
 
         JSONObject result = new JSONObject();
-//        if (code.equals(verifyCode)){
-//            result.put("code", 200);
-//        }else{
-//            result.put("code", 400);
-//        }
+        if (code.equals(verifyCode)){
+            result.put("code", 200);
+        }else{
+            result.put("code", 400);
+        }
         // 先不进行验证，使用服务器访问会有问题
-        result.put("code", 200);
+//        result.put("code", 200);
         return result;
     }
 
