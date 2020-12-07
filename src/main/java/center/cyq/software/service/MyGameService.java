@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface MyGameService {
     List<Game> getCartInfo(Integer userId);
+    Integer deleteGameInCart(Integer userId, Integer gameId);
+    Integer deleteAllGameInCart(Integer userId);
 }

@@ -120,9 +120,9 @@ public class GameController {
                                 .element("gameId", gameId)
                                 .element("content", r.getContent())
                                 .element("userId", r.getUserId())
-                                .element("userName", user.getUserName())
-                                .element("userPicUrl", user.getPicUrl())
-                                .element("time", dateFormat.format(r.getTime())));
+                                .element("author", user.getUserName())
+                                .element("avatar", user.getPicUrl() == null ? user.getPicUrl() : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png")
+                                .element("datetime", dateFormat.format(r.getTime())));
         }
         result.put("data", new JSONObject()
                 .element("gameId", game.getId())
