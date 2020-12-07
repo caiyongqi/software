@@ -90,7 +90,6 @@ public class UserController {
         }catch (Exception e){
             result.put("code", 400);
         }
-
         return result;
     }
 
