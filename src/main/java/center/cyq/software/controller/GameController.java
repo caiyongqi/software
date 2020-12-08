@@ -136,7 +136,7 @@ public class GameController {
                 .element("price", game.getPrice())
                 .element("description", game.getDescription())
                 .element("discount", game.getDiscount())
-                .element("rate", reviewService.getRate(gameId))
+                .element("rate", reviewService.getRate(gameId) == null ? "暂无评分" : reviewService.getRate(gameId))
 //                .element("reviewContent", game.getReviewContent())
                 .element("mvUrl", game.getMvUrl())
                 .element("reviewNum", reviewService.getReviewNum(game.getId()))
