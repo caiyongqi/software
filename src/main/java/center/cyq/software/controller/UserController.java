@@ -72,7 +72,7 @@ public class UserController {
 
     @GetMapping("/register/sendCode")
     @ResponseBody
-    public JSONObject sendCode(HttpServletRequest request) {
+    public JSONObject sendCode(HttpServletRequest request, HttpSession session) {
         String mail = request.getParameter("registerMail");
 //        System.out.println(mail);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
@@ -83,7 +83,7 @@ public class UserController {
         mailMessage.setSubject("游戏管理系统：验证码");
         String code = getRandomCode();
         mailMessage.setText("你的验证码为：" + code);
-        request.getSession().setAttribute("code", code);
+        session.setAttribute("code", code);
         JSONObject result = new JSONObject();
         try {
             mailSender.send(mailMessage);
