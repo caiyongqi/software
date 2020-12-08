@@ -21,4 +21,9 @@ public interface UserDao {
 
     // 返回用户购物车中的游戏信息
 //    List<Game> getCartInfo(Integer userId);
+
+    Integer updateUserById(User user);
+
+
+
 }

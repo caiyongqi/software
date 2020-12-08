@@ -320,4 +320,66 @@ public class UserController {
         result.put("code", 200);
         return result;
     }
+
+    @GetMapping("/settingInfo")
+    @ResponseBody
+    public JSONObject updateInfoById(HttpServletRequest request) {
+        String userName = request.getParameter("userName");
+        Integer userId = Integer.valueOf(request.getParameter("userId"));
+        Integer gender = Integer.valueOf(request.getParameter("gender"));
+
+        JSONObject result = new JSONObject();
+        if (userService.updateUserById(new User(userId, userName, gender)) == 1) {
+            result.put("code", 200);
+        } else {
+            result.put("code", 400);
+        }
+        return result;
+    }
+
+    @GetMapping("/settingMail")
+    @ResponseBody
+    public JSONObject updateMailById(HttpServletRequest request) {
+        String mail = request.getParameter("mail");
+        Integer userId = Integer.valueOf(request.getParameter("userId"));
+
+        JSONObject result = new JSONObject();
+        if (userService.updateUserById(new User(userId, mail)) == 1) {
+            result.put("code", 200);
+        } else {
+            result.put("code", 400);
+        }
+        return result;
+    }
+
+    @GetMapping("/settingPassword")
+    @ResponseBody
+    public JSONObject updatePasswordById(HttpServletRequest request) {
+        Integer userId = Integer.valueOf(request.getParameter("userId"));
+        String password = MD5Utils.code(request.getParameter("newPassword"));
+
+        JSONObject result = new JSONObject();
+        if (userService.updateUserById(new User(true, userId, password)) == 1) {
+            result.put("code", 200);
+        } else {
+            result.put("code", 400);
+        }
+        return result;
+    }
+
+    @GetMapping("/settingOldPassword")
+    @ResponseBody
+    public JSONObject checkPasswordById(HttpServletRequest request) {
+        Integer userId = Integer.valueOf(request.getParameter("userId"));
+        String password = MD5Utils.code(request.getParameter("oldPassword"));
+
+        JSONObject result = new JSONObject();
+        User user = userService.findUserById(userId);
+        if (user == null || !user.getPassword().equals(password)) {
+            result.put("code", 400);
+        } else {
+            result.put("code", 200);
+        }
+        return result;
+    }
 }
