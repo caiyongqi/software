@@ -24,4 +24,7 @@ public interface MyGameDao {
 
     // 返回查询的游戏信息
     List<Game> searchGame(@Param("content") String content);
+
+    // 获取热销商品排行
+    List<Game> classifyHot();
 }

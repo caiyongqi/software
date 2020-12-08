@@ -10,4 +10,5 @@ public interface MyGameService {
     Integer deleteAllGameInCart(Integer userId);
     Integer addList(Integer userId, Integer gameId);
     List<Game> searchGame(String content);
+    List<Game> classifyHot();
 }

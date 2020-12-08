@@ -244,7 +244,7 @@ public class UserController {
 
         // 操作成功码的判断
         Integer code = myGameService.addList(userId, gameId);
-        if (code >= 0) {
+        if (code > 0) {
             result.put("code", 200);
         } else {
             result.put("code", 400);
@@ -289,5 +289,38 @@ public class UserController {
         return result;
     }
 
+
+    @GetMapping("/classifyHot")
+    @ResponseBody
+    public JSONObject classifyHot(HttpServletRequest request) {
+        JSONObject result = new JSONObject();
+
+        // 操作成功码的判断
+        List<Game> gamesList = myGameService.classifyHot();
+        if (gamesList == null) {
+            result.put("code", 400);
+            return result;
+        }
+        // 时间格式化
+        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        List<JSONObject> gamesInfo = new ArrayList<>();
+        for (Game g1 : gamesList) {
+            // 字段如果为null，则不会存入json，返回的数据中没有该字段
+            JSONObject game = new JSONObject()
+                    .element("gameId", g1.getId())
+                    .element("gameName", g1.getName())
+                    .element("price", g1.getPrice())
+                    .element("discount", g1.getDiscount())
+                    .element("picUrl", g1.getPicUrl())
+                    .element("labels", g1.getLabels())
+                    .element("sale", g1.getSale())
+                    .element("publishTime", dateFormat.format(g1.getPublishTime()));
+            gamesInfo.add(game);
+        }
+        result.put("code", 200);
+        result.put("searchList", gamesInfo);
+        result.put("totalSearch", gamesList.size());
+        return result;
+    }
 
 }

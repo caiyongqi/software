@@ -42,4 +42,9 @@ public class MyGameServiceImpl implements MyGameService {
     public List<Game> searchGame(String content) {
         return myGameDao.searchGame(content);
     }
+
+    @Override
+    public List<Game> classifyHot() {
+        return myGameDao.classifyHot();
+    }
 }
