@@ -3,12 +3,12 @@
 <mapper namespace="center.cyq.software.dao.MyGameDao">
 
     <select id="getCartInfo" parameterType="Integer" resultType="Game">
-        SELECT game.* FROM mygame, game WHERE mygame.userId = #{userId} AND mygame.gameId = game.id
+        SELECT game.* FROM mygame, game WHERE mygame.userId = #{userId} AND mygame.gameId = game.id AND `type` = 0
     </select>
     <delete id="deleteGameInCart" parameterType="Integer">
-        DELETE FROM mygame WHERE gameId = #{gameId} AND userId = #{userId}
+        DELETE FROM mygame WHERE gameId = #{gameId} AND userId = #{userId} AND `type` = 0
     </delete>
     <delete id="deleteAllGameInCart" parameterType="Integer">
-        DELETE FROM mygame WHERE userId = #{userId}
+        DELETE FROM mygame WHERE userId = #{userId} AND `type` = 0
     </delete>
 </mapper>
