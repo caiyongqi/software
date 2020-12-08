@@ -12,7 +12,7 @@ import java.util.List;
 public class MyGame {
     private Integer userId;
     private Integer gameId;
-
+    private Integer type;
     // 一个用户对应多个游戏
     private User user;
     private List<Game> games;
