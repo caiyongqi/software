@@ -13,4 +13,6 @@ import java.util.List;
     List<Review> getReviews(Integer gameId);
     // 返回游戏评论数
     int getReviewNum(Integer gameId);
+    // 返回游戏好评数
+    int getPosReviewNum(Integer gameId);
 }

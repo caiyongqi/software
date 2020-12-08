@@ -85,7 +85,7 @@ public class GameController {
     @ResponseBody
     public JSONObject getLatestGames(){
         JSONObject result = new JSONObject();
-        List<Game> games = gameService.getLatestGames(12);
+        List<Game> games = gameService.getLatestGames(4);
         if (games == null){
             result.put("code", 400);
             return result;
@@ -134,7 +134,8 @@ public class GameController {
                 .element("price", game.getPrice())
                 .element("description", game.getDescription())
                 .element("discount", game.getDiscount())
-                .element("reviewContent", game.getReviewContent())
+                .element("rate", reviewService.getReviewNum(gameId) != 0 ? 1.0*reviewService.getPosReviewNum(gameId) / reviewService.getReviewNum(gameId) : 0)
+//                .element("reviewContent", game.getReviewContent())
                 .element("mvUrl", game.getMvUrl())
                 .element("reviewNum", reviewService.getReviewNum(game.getId()))
                 .element("reviews", reviewInfo));
