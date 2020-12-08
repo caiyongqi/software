@@ -31,4 +31,15 @@ public class MyGameServiceImpl implements MyGameService {
     public Integer deleteAllGameInCart(Integer userId) {
         return myGameDao.deleteAllGameInCart(userId);
     }
+
+    @Override
+    public Integer addList(Integer userId, Integer gameId) {
+        // 如果不存在则继续添加
+        return myGameDao.addList(userId, gameId);
+    }
+
+    @Override
+    public List<Game> searchGame(String content) {
+        return myGameDao.searchGame(content);
+    }
 }
