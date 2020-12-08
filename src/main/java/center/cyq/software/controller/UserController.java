@@ -252,7 +252,6 @@ public class UserController {
         return result;
     }
 
-
     @GetMapping("/search")
     @ResponseBody
     public JSONObject searchGame(HttpServletRequest request) {
@@ -288,6 +287,4 @@ public class UserController {
         result.put("totalSearch", gamesList.size());
         return result;
     }
-
-
 }

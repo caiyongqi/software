@@ -134,7 +134,7 @@ public class GameController {
                 .element("price", game.getPrice())
                 .element("description", game.getDescription())
                 .element("discount", game.getDiscount())
-                .element("rate", reviewService.getReviewNum(gameId) != 0 ? 1.0*reviewService.getPosReviewNum(gameId) / reviewService.getReviewNum(gameId) : 0)
+                .element("rate", reviewService.getRate(gameId))
 //                .element("reviewContent", game.getReviewContent())
                 .element("mvUrl", game.getMvUrl())
                 .element("reviewNum", reviewService.getReviewNum(game.getId()))
