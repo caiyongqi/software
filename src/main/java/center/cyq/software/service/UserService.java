@@ -10,4 +10,6 @@ public interface UserService {
     Integer updateUser(User user);
 
     User findUserById(Integer userId);
+
+    Integer updateUserById(User user);
 }

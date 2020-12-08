@@ -34,4 +34,20 @@ public class User {
         this.mail = mail;
         this.password = password;
     }
+
+    public User(Integer userId, String userName, Integer gender) {
+        this.userId = userId;
+        this.userName = userName;
+        this.gender = gender;
+    }
+
+    public User(Integer userId, String mail) {
+        this.userId = userId;
+        this.mail = mail;
+    }
+
+    public User(boolean b, Integer userId, String password) {
+        this.userId = userId;
+        this.password = password;
+    }
 }

@@ -20,4 +20,20 @@
     <select id="findUserById" parameterType="Integer" resultType="User">
         SELECT * FROM user WHERE userId = #{userId}
     </select>
+    <update id="updateUserById" parameterType="User">
+        UPDATE user SET userId = #{userId}
+        <if test="userName != null and userName != ''">
+            , `userName` = #{userName}
+        </if>
+        <if test="gender != null and gender != ''">
+            , gender = #{gender}
+        </if>
+        <if test="mail != null and mail != ''">
+            , mail = #{mail}
+        </if>
+        <if test="password != null and password != ''">
+            , password = #{password}
+        </if>
+        WHERE userId = #{userId}
+    </update>
 </mapper>
