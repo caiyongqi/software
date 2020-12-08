@@ -14,6 +14,7 @@ public class Review {
     private String content;
     private Integer userId;
     private Date time;
+    private Integer type;
 
     // 发表该评论的用户
     private User user;

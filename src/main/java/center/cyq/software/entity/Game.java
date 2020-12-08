@@ -22,7 +22,7 @@ public class Game {
     private Float discount;
     private String mvUrl;
     private String reviewContent;
-
+    private Integer sale;
     // 一个游戏对应多个评论
     private List<Review> reviews;
 }
