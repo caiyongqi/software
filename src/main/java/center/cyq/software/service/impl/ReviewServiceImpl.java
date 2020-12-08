@@ -26,4 +26,10 @@ public class ReviewServiceImpl implements ReviewService {
     public int getReviewNum(Integer gameId) {
         return reviewDao.getReviewNum(gameId);
     }
+
+    @Override
+    public float getRate(Integer gameId) {
+        return reviewDao.getRate(gameId);
+    }
+
 }

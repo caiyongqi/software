@@ -9,5 +9,8 @@
     <select id="getReviewNum" parameterType="Integer" resultType="Integer">
         SELECT COUNT(*) FROM review WHERE gameId = #{gameId}
     </select>
+    <select id="getRate" parameterType="Integer" resultType="Float">
+        SELECT AVG(rate) FROM review WHERE gameId = #{gameId}
+    </select>
 
 </mapper>

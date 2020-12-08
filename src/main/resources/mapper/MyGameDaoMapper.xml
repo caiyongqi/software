@@ -3,13 +3,13 @@
 <mapper namespace="center.cyq.software.dao.MyGameDao">
 
     <select id="getCartInfo" parameterType="Integer" resultType="Game">
-        SELECT game.* FROM mygame, game WHERE mygame.userId = #{userId} AND mygame.gameId = game.id
+        SELECT game.* FROM mygame, game WHERE mygame.userId = #{userId} AND mygame.gameId = game.id AND `type` = 0
     </select>
     <delete id="deleteGameInCart" parameterType="Integer">
-        DELETE FROM mygame WHERE gameId = #{gameId} AND userId = #{userId}
+        DELETE FROM mygame WHERE gameId = #{gameId} AND userId = #{userId} AND `type` = 0
     </delete>
     <delete id="deleteAllGameInCart" parameterType="Integer">
-        DELETE FROM mygame WHERE userId = #{userId}
+        DELETE FROM mygame WHERE userId = #{userId} AND `type` = 0
     </delete>
 
     <insert id="addList" parameterType="Integer">
@@ -20,7 +20,23 @@
         select * from game where name LIKE concat("%", #{content}, "%")
     </select>
 
-    <select id="classifyHot">
+    <select id="classifyHot" resultType="Game">
+        select * from game order by sale DESC;
+    </select>
 
+    <select id="classifyGood" resultType="GameReview">
+        SELECT * from game join (SELECT gameId, AVG(rate) as rate FROM review GROUP BY gameId ORDER BY rate DESC) as a ON a.gameId=game.id;
+    </select>
+
+    <select id="myGame" parameterType="Integer" resultType="Game">
+        SELECT * FROM game WHERE id in ( SELECT gameId FROM mygame WHERE userId=#{userId} and type=1);
+    </select>
+
+    <update id="buyGame" parameterType="Integer">
+        UPDATE mygame set type=1 WHERE userId=#{userId};
+    </update>
+    
+    <select id="classifyWill" resultType="Game">
+        SELECT * from game  WHERE TIMEDIFF(publishTime, DATE_FORMAT(NOW(),'%y-%m-%d')) &lt;0 ORDER BY TIMEDIFF(publishTime, DATE_FORMAT(NOW(),'%y-%m-%d')) DESC;
     </select>
 </mapper>

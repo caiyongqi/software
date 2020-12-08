@@ -2,6 +2,7 @@ package center.cyq.software.service.impl;
 
 import center.cyq.software.dao.MyGameDao;
 import center.cyq.software.entity.Game;
+import center.cyq.software.entity.GameReview;
 import center.cyq.software.service.MyGameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,5 +47,25 @@ public class MyGameServiceImpl implements MyGameService {
     @Override
     public List<Game> classifyHot() {
         return myGameDao.classifyHot();
+    }
+
+    @Override
+    public List<GameReview> classifyGood() {
+        return myGameDao.classifyGood();
+    }
+
+    @Override
+    public List<Game> myGame(Integer userId) {
+        return myGameDao.myGame(userId);
+    }
+
+    @Override
+    public Integer buyGame(Integer userId) {
+        return myGameDao.buyGame(userId);
+    }
+
+    @Override
+    public List<Game> classifyWill() {
+        return myGameDao.classifyWill();
     }
 }

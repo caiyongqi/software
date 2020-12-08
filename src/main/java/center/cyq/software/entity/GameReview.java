@@ -5,12 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 
+/**
+ * 好评度高的游戏
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Game {
+public class GameReview {
     private Integer id;
     private String name;
     private Date publishTime;
@@ -23,6 +25,6 @@ public class Game {
     private String mvUrl;
     private String reviewContent;
     private Integer sale;
-    // 一个游戏对应多个评论
-    private List<Review> reviews;
+    private Integer gameId;
+    private Double rate;
 }
