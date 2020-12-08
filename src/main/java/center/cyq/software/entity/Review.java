@@ -14,8 +14,17 @@ public class Review {
     private String content;
     private Integer userId;
     private Date time;
-    private Integer type;
+//    private Integer type;
+    private Float rate;
 
     // 发表该评论的用户
     private User user;
+
+    public Review(Integer userId, Integer gameId, String content, Float rate, Date time) {
+        this.userId = userId;
+        this.gameId = gameId;
+        this.content = content;
+        this.rate = rate;
+        this.time = time;
+    }
 }
