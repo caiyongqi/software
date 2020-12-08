@@ -28,8 +28,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public float getRate(Integer gameId) {
+    public Float getRate(Integer gameId) {
         return reviewDao.getRate(gameId);
+    }
+
+    @Override
+    public int addComment(Review review) {
+        return reviewDao.addComment(review);
     }
 
 }

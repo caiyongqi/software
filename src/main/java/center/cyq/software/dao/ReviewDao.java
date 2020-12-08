@@ -14,5 +14,7 @@ import java.util.List;
     // 返回游戏评论数
     int getReviewNum(Integer gameId);
     // 返回游戏平均评分
-    float getRate(Integer gameId);
+    Float getRate(Integer gameId);
+    // 添加评论
+   int addComment(Review review);
 }

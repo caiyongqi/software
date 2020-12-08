@@ -1,8 +1,10 @@
 package center.cyq.software.controller;
 
 import center.cyq.software.entity.Game;
+import center.cyq.software.entity.Review;
 import center.cyq.software.entity.User;
 import center.cyq.software.service.MyGameService;
+import center.cyq.software.service.ReviewService;
 import center.cyq.software.service.UserService;
 import center.cyq.software.utils.MD5Utils;
 import net.sf.json.JSONObject;
@@ -18,8 +20,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -33,12 +37,14 @@ public class UserController {
 
     private UserService userService;
     private MyGameService myGameService;
+    private ReviewService reviewService;
 
     @Autowired
-    public UserController(JavaMailSender mailSender, UserService userService, MyGameService myGameService) {
+    public UserController(JavaMailSender mailSender, UserService userService, MyGameService myGameService, ReviewService reviewService) {
         this.mailSender = mailSender;
         this.userService = userService;
         this.myGameService = myGameService;
+        this.reviewService = reviewService;
         this.dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 
@@ -287,6 +293,31 @@ public class UserController {
         result.put("code", 200);
         result.put("searchList", gamesInfo);
         result.put("totalSearch", gamesList.size());
+        return result;
+    }
+
+    @GetMapping("/addComment")
+    @ResponseBody
+    public JSONObject addComment(HttpServletRequest request) {
+        JSONObject result = new JSONObject();
+
+        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");        // 获取参数
+        Integer userId = Integer.valueOf(request.getParameter("userId"));
+        Integer gameId = Integer.valueOf(request.getParameter("gameId"));
+        String content = request.getParameter("content");
+        Float rate = Float.valueOf(request.getParameter("rate"));
+
+        try {
+            Date time = dateFormat.parse(request.getParameter("time"));
+            if (reviewService.addComment(new Review(userId, gameId, content, rate, time)) != 1) {
+                result.put("code", 400);
+                return result;
+            }
+        }catch (ParseException e){
+            result.put("message", "时间格式不对，应为yyyy-MM-dd HH:mm:ss");
+            return result;
+        }
+        result.put("code", 200);
         return result;
     }
 }
