@@ -3,9 +3,11 @@ package center.cyq.software.controller;
 import center.cyq.software.entity.Game;
 import center.cyq.software.entity.GameReview;
 import center.cyq.software.entity.Review;
+import center.cyq.software.entity.Session;
 import center.cyq.software.entity.User;
 import center.cyq.software.service.MyGameService;
 import center.cyq.software.service.ReviewService;
+import center.cyq.software.service.SessionService;
 import center.cyq.software.service.UserService;
 import center.cyq.software.utils.MD5Utils;
 import net.sf.json.JSONObject;
@@ -39,13 +41,15 @@ public class UserController {
     private UserService userService;
     private MyGameService myGameService;
     private ReviewService reviewService;
+    private SessionService sessionService;
 
     @Autowired
-    public UserController(JavaMailSender mailSender, UserService userService, MyGameService myGameService, ReviewService reviewService) {
+    public UserController(JavaMailSender mailSender, UserService userService, MyGameService myGameService, ReviewService reviewService, SessionService sessionService) {
         this.mailSender = mailSender;
         this.userService = userService;
         this.myGameService = myGameService;
         this.reviewService = reviewService;
+        this.sessionService = sessionService;
         this.dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 
@@ -57,7 +61,10 @@ public class UserController {
         String password = MD5Utils.code(request.getParameter("registerPassword"));
         String mail = request.getParameter("registerMail");
         User user = new User(userName, password, gender, mail);
-
+        // 没有检验
+        if (sessionService.getSession(mail) == null){
+            sessionService.addMail(mail);
+        }
         JSONObject result = new JSONObject();
 
         if (userService.addUser(user) == 1) {
@@ -90,8 +97,16 @@ public class UserController {
         mailMessage.setSubject("游戏管理系统：验证码");
         String code = getRandomCode();
         mailMessage.setText("你的验证码为：" + code);
-        session.setAttribute("code", code);
+//        session.setAttribute("code", code);
         JSONObject result = new JSONObject();
+        if (sessionService.getSession(mail) == null){
+            sessionService.addMail(mail);
+        }
+
+        if (sessionService.updateCode(new Session(mail, code)) != 1){
+            result.element("code", 400);
+            return  result;
+        }
         try {
             mailSender.send(mailMessage);
             result.put("code", 200);
@@ -105,12 +120,18 @@ public class UserController {
     @GetMapping("/register/checkCode")
     @ResponseBody
     public JSONObject checkCode(HttpServletRequest request, HttpSession session) {
-        String code = (String) session.getAttribute("code");
+        JSONObject result = new JSONObject();
 
+//        String code = (String) session.getAttribute("code");
         String mail = request.getParameter("registerMail");
+        Session s = sessionService.getSession(mail);
+        if (s == null){
+            result.put("code", 400);
+            return result;
+        }
+        String code = s.getCode();
         String verifyCode = request.getParameter("registerVerifyCode");
 
-        JSONObject result = new JSONObject();
         if (code.equals(verifyCode)) {
             result.put("code", 200);
         } else {
@@ -460,7 +481,10 @@ public class UserController {
     public JSONObject updateMailById(HttpServletRequest request) {
         String mail = request.getParameter("mail");
         Integer userId = Integer.valueOf(request.getParameter("userId"));
-
+        // 没有检验
+        if (sessionService.getSession(mail) == null){
+            sessionService.addMail(mail);
+        }
         JSONObject result = new JSONObject();
         if (userService.updateUserById(new User(userId, mail)) == 1) {
             result.put("code", 200);
