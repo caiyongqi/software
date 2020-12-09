@@ -66,7 +66,10 @@ public class UserController {
             sessionService.addMail(mail);
         }
         JSONObject result = new JSONObject();
-
+        if (userService.findUserByMail(new User(mail)) == null){
+            result.put("code", 400);
+            return result;
+        }
         if (userService.addUser(user) == 1) {
             result.put("code", 200);
         } else {
@@ -469,6 +472,14 @@ public class UserController {
 
         JSONObject result = new JSONObject();
         if (userService.updateUserById(new User(userId, userName, gender)) == 1) {
+            User user = userService.findUserById(userId);
+            List<JSONObject> list = new ArrayList<>();
+            list.add(new JSONObject()
+                    .element("userId", user.getUserId())
+                    .element("userName", user.getUserName())
+                    .element("gender", user.getGender())
+                    .element("mail", user.getMail()));
+            result.element("loginObj", list);
             result.put("code", 200);
         } else {
             result.put("code", 400);
