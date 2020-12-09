@@ -66,7 +66,7 @@ public class UserController {
             sessionService.addMail(mail);
         }
         JSONObject result = new JSONObject();
-        if (userService.findUserByMail(new User(mail)) == null){
+        if (userService.findUserByMail(new User(mail)) != null){
             result.put("code", 400);
             return result;
         }
@@ -469,10 +469,11 @@ public class UserController {
         String userName = request.getParameter("userName");
         Integer userId = Integer.valueOf(request.getParameter("userId"));
         Integer gender = Integer.valueOf(request.getParameter("gender"));
-
+System.out.println(gender);
         JSONObject result = new JSONObject();
         if (userService.updateUserById(new User(userId, userName, gender)) == 1) {
             User user = userService.findUserById(userId);
+            System.out.println(user);
             List<JSONObject> list = new ArrayList<>();
             list.add(new JSONObject()
                     .element("userId", user.getUserId())

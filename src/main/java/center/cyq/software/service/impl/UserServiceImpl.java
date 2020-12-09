@@ -36,7 +36,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer updateUserById(User user) {
+    public Integer updateUserById(User user)
+    {
         return userDao.updateUserById(user);
     }
 }
