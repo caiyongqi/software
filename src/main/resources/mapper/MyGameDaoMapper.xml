@@ -25,7 +25,7 @@
     </select>
 
     <select id="classifyGood" resultType="GameReview">
-        SELECT * from game join (SELECT gameId, AVG(rate) as rate FROM review GROUP BY gameId ORDER BY rate DESC) as a ON a.gameId=game.id;
+        SELECT * from game join (SELECT gameId, AVG(rate) as rate FROM review WHERE rate>=3 GROUP BY gameId ORDER BY rate DESC) as a ON a.gameId=game.id;
     </select>
 
     <select id="myGame" parameterType="Integer" resultType="Game">
